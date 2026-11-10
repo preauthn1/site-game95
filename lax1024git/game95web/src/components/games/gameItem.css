@@ -1,0 +1,345 @@
+.game-preview {
+  position: relative;
+  border-radius: 14px 14px 0px 0px;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #202a39;
+  display: block;
+  -webkit-transform: translateZ(0);
+  -webkit-perspective: 1000;
+}
+.game-preview.hover .game-preview__hover,
+.game-preview:hover .game-preview__hover {
+  opacity: 1;
+}
+.game-preview.hover .game-preview__inner,
+.game-preview:hover .game-preview__inner {
+  filter: blur(3px);
+}
+
+.game-preview.hover .game-preview__image,
+.game-preview:hover .game-preview__image {
+  transform: scale(1.05);
+}
+
+.game-preview.hover .game-preview__name,
+.game-preview:hover .game-preview__name {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (max-width: 947px) {
+  .game-preview.hover .game-preview__name,
+  .game-preview:hover .game-preview__name {
+    display: none;
+  }
+}
+
+.game-preview.hover .game-preview__btn-play,
+.game-preview.hover .game-preview__lock,
+.game-preview:hover .game-preview__btn-play,
+.game-preview:hover .game-preview__lock {
+  opacity: 1;
+}
+
+.game-preview.hover .game-preview__provider,
+.game-preview:hover .game-preview__provider {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (max-width: 947px) {
+  .game-preview.hover .game-preview__provider,
+  .game-preview:hover .game-preview__provider {
+    display: none;
+  }
+}
+
+
+.game-preview__shield {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 95px;
+  height: 23px;
+  background-size: 95px 23px;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  -webkit-transform: translateZ(0);
+  -webkit-perspective: 1000;
+  transform: translateZ(1px);
+}
+
+.game-preview__shield_promo {
+  background-image: url(../../assets/images/promo.png);
+}
+
+.game-preview__shield_popular {
+  background-image: url(../../assets/images/popular.png);
+}
+
+.game-preview__shield_hot {
+  background-image: url(../../assets/images/hot.png);
+}
+
+.game-preview__shield_top {
+  background-image: url(../../assets/images/top.png);
+}
+
+.game-preview__shield_new {
+  background-image: url(../../assets/images/new.png);
+}
+
+.game-preview__shield_tournament {
+  background-image: url(../../assets/images/tournament.png);
+}
+
+.game-preview__shield_battles {
+  background-image: url(../../assets/images/battle.png);
+}
+
+.rtp .icon-preview svg {
+  fill: #93acd3;
+}
+
+.game-preview__inner {
+  position: relative;
+  overflow: hidden;
+  padding-top: 133.34%;
+}
+
+.manufacturer{
+  padding: 6px 0 4px;
+  text-align: center;
+
+}
+
+@media (max-width: 947px) {
+  .manufacturer{
+    padding: 6px 0 2px;
+    text-align: center;
+
+  }
+}
+
+
+.game-preview__image {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transition: transform 0.1s ease-in-out;
+}
+
+.game-preview__image img {
+  -o-object-fit: cover;
+  object-fit: cover;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.game-preview__hover {
+  /* background-color: rgba(27, 34, 51, 0.8); */
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  z-index: 1;
+  padding: 19px 10px 13px;
+  transition: opacity 0.1s ease-in-out;
+  -webkit-transform: translateZ(0);
+  -webkit-perspective: 1000;
+  transform: translateZ(1px);
+}
+
+@media (max-width: 947px) {
+  .game-preview__hover {
+    justify-content: center;
+  }
+}
+
+.game-preview__name {
+  opacity: 0;
+  transform: scale(0.9);
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-align: center;
+  max-width: 70%;
+  display: -webkit-box;
+  display: block;
+  font-size: 14px;
+  height: 36.4px;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+@media (max-width: 576px) {
+  .game-preview__name {
+    font-size: 12px;
+    height: 20px;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 808px) {
+   .game-preview__name {
+    font-size: 12px;
+    height: 20px;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 901px) {
+   .game-preview__name {
+    font-size: 12px;
+    height: 20px;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 916px) {
+   .game-preview__name {
+    font-size: 12px;
+    height: 20px;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+  }
+}
+
+
+.game-preview__provider {
+  text-transform: capitalize;
+  font-size: 11px;
+  text-align: center;
+  color: #93acd3;
+}
+
+.game-preview__btn-play,
+.game-preview__provider {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.game-preview__btn-play {
+  width: calc(40% + 20px);
+  min-width: 42px;
+  background: linear-gradient(0deg, #01E9BD, #007CDE);
+  border-radius: 50%;
+}
+
+.game-preview__btn-play svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  fill: #fff;
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 576px) {
+  .game-preview__btn-play svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 808px) {
+   .game-preview__btn-play svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 901px) {
+   .game-preview__btn-play svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+
+.game-preview__btn-play:before {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.collect{
+  position: absolute;
+  right: 6%;
+  top: 6%;
+  width: 16px;
+  height: 16px;
+}
+.c-img,.c-img-ac{
+  width: 100%;
+  user-select: none;
+}
+.c-img-ac{
+  display: none;
+}
+.collect-an{
+  animation: collect .6s;
+}
+@keyframes collect{
+  0%{
+    transform: scale(1);
+  }50%{
+    transform: scale(2);
+  }100%{
+    transform: scale(1);
+  }
+}
+.hide{
+  display: none !important;
+}
+.show{
+  display: block !important;
+}
+
+@media screen and (max-width:768px) {
+  .collect{
+    display: none;
+  }
+}
+
+.game-preview__ctr{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  background-color: rgba(27, 34, 51, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.el-icon-delete{
+  font-size: 20px;
+  font-weight: bold;
+  color: #ed1d49;
+}

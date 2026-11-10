@@ -1,0 +1,342 @@
+.link-box{
+/*   background: #1A1C20; */
+  border-radius: 8px;
+  border: 1px solid #464546;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  margin-bottom: 20px;
+  &-left{
+    display: flex;
+    align-items: center;
+  }
+  &-right{
+    cursor: pointer;
+  }
+}
+.t-header{
+  width: 100%;
+  margin: 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-image: url("~@/assets/images/team-h-bg.png");
+  background-size: cover;
+  background-position: center center;
+  border-radius: 15px;
+  padding: 27px 20px;
+  @media (max-width:768px) {
+    flex-direction: column;
+    margin: 15px 0;
+  }
+}
+.t-header-img{
+  width: 391px;
+  position: relative;
+  max-width: 100%;
+  @media (max-width:768px) {
+    margin: 16px 0 0;
+  }
+  img{
+    width: 100%;
+  }
+  .txt1{
+    position: absolute;
+    top: 25%;
+    right: 56%;
+  }
+  .txt2{
+    position: absolute;
+    top: 29%;
+    left: 53%;
+  }
+  .txt3{
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+  }
+  .txt4{
+    position: absolute;
+    top: 72%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+  }
+  .txt5{
+    position: absolute;
+    top: 89%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+  }
+}
+.t-header-content{
+  text-align: center;
+  max-width: 50%;
+  @media (max-width:768px) {
+    max-width: 100%;
+  }
+}
+.h-title{
+  font-size: 36px;
+  margin-bottom: 20px;
+  @media (max-width:768px) {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+}
+.h-sub-title{
+  color: #F4B909;
+  margin-bottom: 10px;
+}
+.h-desc{
+  color: #B9B9B9;
+  margin-bottom: 16px;
+}
+
+.referTo{
+  background-color: #282f5a;
+  border-radius: 10px;
+  padding:15px;
+  padding-bottom: 60px;
+  @media (max-width:768px) {
+    padding: 15px;
+  }
+}
+.r-title{
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  @media (max-width:768px) {
+    font-size: 16px;
+  }
+}
+.r-content{
+  display: flex;
+  @media (max-width:768px) {
+    flex-direction: column;
+  }
+}
+.r-l{
+  flex: 1;
+  margin-right: 65px;
+  @media (max-width:768px) {
+    margin-right: 0;
+  }
+}
+.r-r{
+  flex: 1;
+}
+.copy-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 65px;
+  height: 31px;
+  border-radius: 100vh;
+  flex-shrink: 0;
+}
+.link-item{
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+.link-wapper{
+  background-color: #243349;
+  display: flex;
+  align-items: center;
+  border-radius: 100vh;
+  flex: 1;
+  justify-content: space-between;
+  width: 0;
+}
+.link-txt{
+  padding: 0 8px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  @media (max-width:768px) {
+    padding: 0 8px;
+    font-size: 12px;
+  }
+}
+.link-title{
+  min-width: 6em;
+  color: #B9B9B9;
+  font-size: 16px;
+  @media (max-width:768px) {
+    font-size: 12px;
+  }
+}
+.r-l-desc{
+  text-align: center;
+  color: #B9B9B9;
+  margin-top: 61px;
+  font-size: 14px;
+  @media (max-width:768px) {
+    font-size: 12px;
+    margin-top: 30px;
+  }
+}
+
+.social-icons__button{
+  border-radius: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFF;
+}
+.icon-wapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 34px;
+  @media (max-width:768px) {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+}
+.social-icons__item{
+  margin-right: 20px;
+  transition: all .3s;
+  &:hover{
+    transform: scale(1.2);
+  }
+  &:last-child{
+    margin-right: 0;
+  }
+}
+
+.r-input{
+  &:nth-child(2n){
+    height: 53px;
+    background: #192435;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    font-size: 18px;
+    @media (max-width:768px) {
+      height: 40px;
+    }
+    >span:first-child{
+      color: #2F4463;
+      font-size: 14px;
+    }
+  }
+  &:nth-child(2n-1){
+    padding: 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0;
+    @media (max-width:768px) {
+      margin: 15px 0;
+    }
+    >span:last-child{
+      font-size: 18px;
+      margin-right: 6px;
+    }
+    &:first-child{
+      margin-top: 0;
+      font-size: 14px;
+    }
+  }
+}
+
+.cart{
+  background: #111925;
+  border-radius: 15px;
+  padding: 15px 30px;
+  margin: 22px 0;
+  @media (max-width:768px) {
+    padding: 15px;
+    margin: 15px 0;
+  }
+}
+.list{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 20px;
+  @media (max-width:768px) {
+    grid-template-columns: repeat(1,1fr);
+  }
+}
+.list-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #192435;
+  border-radius: 9px;
+  height: 53px;
+  padding: 0 23px;
+  @media (max-width:768px) {
+    padding: 0 12px;
+    height: 42px;
+  }
+  >span:last-child{
+    font-size: 19px;
+  }
+}
+.date-picker{
+  margin-bottom: 17px;
+}
+.select-wapper{
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+.select{
+  @media (max-width:768px) {
+    width: 100%;
+  }
+}
+.rewards-item{
+  background: #282f5a;
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 20px;
+  div{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    span:nth-child(1){
+      font-family: PingFang SC;
+      font-weight: 400;
+      font-size: 14px;
+      color: #FFFFFF;
+    }
+    span:nth-child(2){
+      color: #84F100;
+    }
+  }
+  div:nth-child(2){
+    margin: 20px 0;
+  }
+}
+.rewards-title{
+  font-size: 16px;
+  font-weight: 500;
+  margin: 20px 0;
+}
+.total-reward{
+  height: 159px;
+  background-image: url("~@/assets/images/teamcenter/bg9.png");
+  background-position: left;
+  background-size: cover;
+  font-family: PingFang SC;
+  font-weight: 600;
+  font-size: 44px;
+  color: #fff;
+  line-height: 159px;
+  text-align: center;
+  margin-bottom: 20px;
+  span{
+    color: #84F100;
+  }
+}

@@ -1,0 +1,92 @@
+export default {
+  getName(sid) {
+    const names = {
+      1: '足球',
+      2: '冰球',
+      3: '篮球',
+      4: '橄榄球',
+      5: '网球',
+      6: '美国足球',
+      7: '棒球',
+      8: '手球',
+      10: '地板球',
+      12: '高尔夫球',
+      13: '排球',
+      14: '玩板球',
+      15: '乒乓球',
+      16: '斯诺克台球',
+      17: '五人制足球',
+      18: '综合格斗',
+      19: '拳击',
+      20: '飞镖',
+      21: '草地滚球',
+      24: '水球',
+      25: '自行车',
+      47: '羽毛球',
+      51: '沙滩排球',
+      92: 'F1赛车',
+      93: '特殊投注',
+      94: '赛车',
+      100: '奥林匹克',
+      164: '刀塔2',
+      165: '英雄联盟',
+      177: '电子足球',
+      178: '电子篮球',
+      180: '王者荣耀',
+      179: '反恐精英',
+      1001: '虚拟足球 （支持玩法：普通）',
+      1020: '虚拟赛马 （支持玩法：普通）',
+      1021: '虚拟赛狗 （支持玩法：普通）',
+      1022: '虚拟沙地摩托车 （支持玩法：普通）',
+      1023: '虚拟摩托车 （支持玩法：普通）',
+    };
+    return names[sid] ? names[sid] : sid;
+  },
+  getLanguageType(lang) {
+    const types = {
+      'EN':'ENG',
+      'CN':'CMN',
+      'TW':'ZHO',
+      'JP':'JPN',
+      'KOR':'KOR',
+      'SPA':'SPA',
+      'VN':'VIE',
+      'TH':'THA',
+      'MY':'MSA',
+      'IN':'IND',
+      'HIN':'HIN'
+    }
+    return types[lang] ? types[lang] : 'ENG';
+  },
+
+  getSportsIconName(sportsId) {
+    const icons = {
+      1:'sport-soccer',
+      5:'sport-tennis',
+      3:'sport-basketball',
+      6:'sport-americanfootball',
+      7:'sport-baseball',
+      2:'sport-icehockey',
+      13:'sport-volleyball',
+      8:'sport-handball',
+      15:'sport-tabletennis',
+      19:'sport-boxing',
+      18:'sport-mma',
+      4:'sport-rugby',
+      92:'sport-formula-1',
+      16:'sport-snooker',
+      24:'sport-waterpolo',
+      14:'sport-cricket',
+      10:'sport-floorball',
+      12:'sport-golf',
+      25:'sport-cycling',
+      93:'sport-specials',
+      20:'sport-darts',
+      51:'sport-beachvolleyball',
+      94:'sport-stockcarracing',
+      100:'icon-olympics',
+      178:'sport-basketball',
+    };
+    return icons[sportsId] ? icons[sportsId] : 'sport-soccer';
+  }
+}

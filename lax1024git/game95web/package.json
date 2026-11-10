@@ -1,0 +1,82 @@
+{
+  "name": "cyberraccoon",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --report",
+    "build:test95": "npx nuxi build --dotenv  --mode:test95",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@lucky-canvas/vue": "^0.1.11",
+    "axios": "^1.2.1",
+    "core-js": "^3.6.5",
+    "element-ui": "^2.15.13",
+    "gsap": "^3.12.2",
+    "moment": "^2.29.4",
+    "swiper": "^6.1.1",
+    "v-calendar": "^2.4.1",
+    "vue": "^2.6.11",
+    "vue-animate-number": "^0.4.2",
+    "vue-awesome-swiper": "^3.1.3",
+    "vue-clipboard2": "^0.3.3",
+    "vue-gtag": "^1.0.1",
+    "vue-i18n": "^8.28.2",
+    "vue-lazyload": "^1.3.3",
+    "vue-lazytube": "^1.1.1",
+    "vue-qr": "^4.0.9",
+    "vue-router": "^3.2.0",
+    "vuex": "^3.6.2",
+    "yarn": "^1.22.22"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "autoprefixer": "9",
+    "babel-eslint": "^10.1.0",
+    "compression-webpack-plugin": "^6.1.2",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "image-webpack-loader": "^8.1.0",
+    "less": "^4.1.3",
+    "less-loader": "^5.0.0",
+    "lint-staged": "^9.5.0",
+    "postcss": "7",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+    "terser-webpack-plugin": "4.2.3",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {
+      "vue/no-unused-components": "off"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue}": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  }
+}

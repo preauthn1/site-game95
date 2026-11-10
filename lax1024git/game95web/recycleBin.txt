@@ -1,0 +1,665 @@
+recycleBin1
+
+   <!-- Wallet -->
+    <el-dialog :modal-append-to-body="false" v-if="$store.state.userInfo" :visible.sync="dialogVisible"
+      custom-class="custom-dialog modal-depositwithdraw" @close="closeWallet">
+      <div class="modal__container">
+        <div class="modal-depositwithdraw__tabs">
+          <div class="tabs">
+            <div class="tabs__body">
+              <button type="button" class="button-tab button-tab_md button-tab_blue"
+                :class="index == walletCur ? 'active' : ''" :key="index" v-for="(item, index) in walletTabs"
+                @click="walletTab(index)">
+                <i>
+                  <svgIcon :icon="item.icon"></svgIcon>
+                </i>
+                <span>{{ $t(item.name) }}</span>
+              </button>
+            </div>
+            <div class="tabs__footer" v-if="!isMobile">
+              <div class="enabled_2fa" v-if="$store.state.userInfo.goodsle_bind">
+                <svgIcon icon="icon-secured"></svgIcon>
+                <span>{{ $t('Protected by 2FA') }}</span>
+              </div>
+              <div class="warning" v-else>
+                <p>{{ $t('You currently do not have 2FA enabled') }}</p>
+                <button @click="goUrl('/account?modal=enabled2fa')" type="button"
+                  class="button button_md button_grey2 button_center button_fullwidth">
+                  <span class="button__inner">
+                    <span class="button__text">
+                      <span>⚠️&nbsp;&nbsp;{{ $t('Enable 2FA') }}</span>
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-depositwithdraw__body" v-loading="$store.state.moduleLoading"
+          element-loading-background="rgba(0, 0, 0, 1)">
+          <!-- Deposit -->
+          <div class="body" v-if="walletCur == 0">
+            <h2 class="body__title">
+              {{ $t('充值') }}
+              <a v-if="this.$t('deposit_tutorial_url') != 'deposit_tutorial_url'" :href="$t('deposit_tutorial_url')"
+                target="__bank" class="body_sub_title">{{ $t('充值教程') }}</a>
+            </h2>
+            <div class="curencies">
+              <div class="modal-depositwithdraw__balances">
+                <el-select v-model="rechargeListValue" :no-data-text="$t('暂无数据')" :placeholder="$t('请选择')"
+                  style="width: 100%;" popper-class="dw-popper-class" @change="rechargeListChange">
+                  <template #prefix>
+                    <div class="select-pre"
+                      v-if="(rechargeList.find(item => item.name == rechargeListValue) || rechargeList[0])">
+                      <img width="20" height="20"
+                        :src="(rechargeList.find(item => item.name == rechargeListValue) || rechargeList[0]).img"
+                        class="currency__icon" />
+                    </div>
+                  </template>
+                  <el-option v-for="(item, index) in rechargeList" :key="`rechargeList${index}`" :label="item.name"
+                    :value="item.name">
+                    <button class="dropdown-menu__link">
+                      <span class="currency is-wallet">
+                        <img width="20" height="20" :src="item.img" class="currency__icon" />
+                        <span class="currency__label">{{ $t(item.name) }}</span>
+                      </span>
+                    </button>
+                  </el-option>
+                </el-select>
+              </div>
+              <!-- <div class="dropdown_bottomRight">
+                <div class="currency__div currency__right__item">{{}}</div>
+              </div>-->
+              <div class="dropdown_bottomRight" :class="$store.state.rechargeCarName == '' ? 'dropdown_is-error' : ''"
+                v-if="rechargeFilter">
+                <el-select v-model="$store.state.rechargeCarName" :placeholder="$t('请选择')" popper-class="dw-popper-class">
+                  <!-- bank -->
+                  <template #prefix v-if="depositType == 0">
+                    <div class="select-pre">
+                      <img width="20" height="20"
+                        :src="(allBank.find(item => item.pay_type == 1 || item.pay_type == 2 ? item.pay_name : item.bank_name == $store.state.rechargeCarName) || allBank[0]).img"
+                        class="currency__icon" />
+                    </div>
+                  </template>
+                  <!-- usdt -->
+                  <template #prefix v-else-if="depositType == 1">
+                    <div class="select-pre">
+                      <img width="20" height="20"
+                        :src="(allUsdt.find(item=>item.pay_type ==1||item.pay_type ==2?item.pay_name:item.bank_name==$store.state.rechargeCarName)||allUsdt[0]).img"
+                        class="currency__icon" />
+                    </div>
+                  </template>
+                  <template #prefix v-else-if="depositType == 2">
+                    <div class="select-pre">
+                      <img width="20" height="20"
+                        :src="(allWallet.find(item=>item.pay_type ==1||item.pay_type ==2||item.pay_type ==5?item.pay_name:item.bank_name==$store.state.rechargeCarName)||allWallet[0]).img"
+                        class="currency__icon" />
+                    </div>
+                  </template>
+                  <template #prefix v-else-if="depositType == 3">
+                    <div class="select-pre">
+                      <img width="20" height="20"
+                        :src="(allPix.find(item=>item.pay_type ==1||item.pay_type ==2||item.pay_type ==7?item.pay_name:item.bank_name==$store.state.rechargeCarName)||allPix[0]).img"
+                        class="currency__icon" />
+                    </div>
+                  </template>
+                  <template v-if="depositType == 0">
+                    <el-option v-for="(item, index) in allBank" :key="`allBank${index}`"
+                      :label="item.pay_type == 1 || item.pay_type == 2 ? item.pay_name : item.bank_name"
+                      :value="item.pay_type == 1 || item.pay_type == 2 ? item.pay_name : item.bank_name">
+                      <button class="dropdown-menu__link" @click="rechargeListTypeChange(item, 0)">
+                        <span class="currency is-wallet">
+                          <img width="20" v-if="item.img" height="20" :src="item.img" class="currency__icon" />
+                          <span class="currency__label">{{ item.pay_type == 1 || item.pay_type
+                            == 2 ? item.pay_name : item.bank_name }}</span>
+                        </span>
+                      </button>
+                    </el-option>
+                  </template>
+                  <template v-if="depositType == 1">
+                    <el-option v-for="(item, index) in allUsdt" :key="`allUsdt${index}`"
+                      :label="item.pay_type == 1 || item.pay_type == 2 ? item.pay_name : item.bank_name"
+                      :value="item.pay_type == 1 || item.pay_type == 2 ? item.pay_name : item.bank_name">
+                      <button class="dropdown-menu__link" @click="rechargeListTypeChange(item, 1)">
+                        <span class="currency is-wallet">
+                          <img width="20" v-if="item.img" height="20" :src="item.img" class="currency__icon" />
+                          <span class="currency__label">{{ item.pay_type == 1 || item.pay_type
+                            == 2 ? item.pay_name : item.bank_name }}</span>
+                        </span>
+                      </button>
+                    </el-option>
+                  </template>
+                  <!-- 电子钱包 -->
+                  <template v-if="depositType == 2">
+                    <el-option v-for="(item, index) in allWallet" :key="`allWallet${index}`"
+                      :label="item.pay_type == 1 || item.pay_type == 2 || item.pay_type == 5 ? item.pay_name : item.bank_name"
+                      :value="item.pay_type == 1 || item.pay_type == 2 || item.pay_type == 5 ? item.pay_name : item.bank_name">
+                      <button class="dropdown-menu__link" @click="rechargeListTypeChange(item, 2)">
+                        <span class="currency is-wallet">
+                          <img width="20" v-if="item.img" height="20" :src="item.img" class="currency__icon" />
+                          <span class="currency__label">{{ item.pay_type == 1 || item.pay_type == 2 || item.pay_type
+                            == 5 ? item.pay_name : item.bank_name }}</span>
+                        </span>
+                      </button>
+                    </el-option>
+                  </template>
+                  <!-- pix -->
+                  <template v-if="depositType == 3">
+                    <el-option v-for="(item, index) in allPix" :key="`allPix${index}`"
+                      :label="item.pay_type == 1 || item.pay_type == 2 || item.pay_type == 7 ? item.pay_name : item.bank_name"
+                      :value="item.pay_type == 1 || item.pay_type == 2 || item.pay_type == 7 ? item.pay_name : item.bank_name">
+                      <button class="dropdown-menu__link" @click="rechargeListTypeChange(item, 3)">
+                        <span class="currency is-wallet">
+                          <img width="20" v-if="item.img" height="20" :src="item.img" class="currency__icon" />
+                          <span class="currency__label">{{ item.pay_type == 1 || item.pay_type == 2 || item.pay_type
+                            == 7 ? item.pay_name : item.bank_name }}</span>
+                        </span>
+                      </button>
+                    </el-option>
+                  </template>
+                </el-select>
+              </div>
+            </div>
+            <div class="select-chain__overlay" v-if="!rechargeCarFilter">
+              <span>{{ $t('无法继续,请选择渠道') }}</span>
+            </div>
+            <!-- usdt -->
+            <div class="tab tab_deposit" v-if="dwToggle == 'USDT' && dep_address != ''">
+              <div class="tab__body">
+                <div class="tab__title-block">
+                  <h2 class="your-address__title">{{ $t('您的USDT充值地址') }}</h2>
+                </div>
+                <div class="input dep_address input_md" readonly="readonly">
+                  <div class="input__inner input__inner_readonly">
+                    <input autocomplete="off" v-model="dep_address" readonly="readonly" class="input__tag" />
+                    <button type="button" class="button button_sm button_blue button_center button_only-icon"
+                      v-clipboard:copy="dep_address" v-clipboard:success="onCopy">
+                      <span class="button__inner">
+                        <span class="button__icon">
+                          <svgIcon icon="icon-copy"></svgIcon>
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div class="qr__block">
+                  <div class="qr__texts">
+                    <p class="dw__plain-text dw__plain-text--14 min_dep">⚠️ &nbsp;{{ $t('您的充值金额:') }} {{ rechargePrice }}
+                      USDT</p>
+                    <p>{{ $t('Sending any amount below the minimum will result in funds loss and not refundable.') }}</p>
+                    <p class="dw__plain-text dw__plain-text--14">{{ $t('usdt_max_desc') }}</p>
+                  </div>
+                  <!-- <img :src="dep_qrcode" style="width:120px;" class="qr" /> -->
+                  <vue-qr class="qr" :size="110" :margin="0" :auto-color="true" :dot-scale="1" :text="dep_address" />
+                </div>
+              </div>
+            </div>
+            <!-- bank -->
+            <div class="tab tab_deposit">
+              <div v-if="depositInfo" class="tab__body">
+                <div class="tab_deposit-panel" :class="this.$i18n.locale != 'TW' ? 'is-not-tw' : ''"
+                  v-if="isOnlineRecharge === false && isUsdtRecharge === false && dep_address != ''">
+                  <div class="dep-bank-row">
+                    <div class="label">{{ depositType == 0 || depositType == 2 || depositType == 3 ? $t('银行名称') :
+                      $t('链名称') }}</div>
+                    <template v-if="depositInfo.bank_name">
+                      <div class="val">{{ depositInfo.bank_name }}</div>
+                      <span class="button__icon" v-clipboard:copy="depositInfo.bank_name" v-clipboard:success="onCopy">
+                        <svgIcon icon="icon-copy" widthName="18" heightName="18"></svgIcon>
+                      </span>
+                    </template>
+                    <template v-if="depositInfo.pay_name">
+                      <div class="val">{{ depositInfo.pay_name }}</div>
+                      <span class="button__icon" v-clipboard:copy="depositInfo.pay_name" v-clipboard:success="onCopy">
+                        <svgIcon icon="icon-copy" widthName="18" heightName="18"></svgIcon>
+                      </span>
+                    </template>
+                  </div>
+                  <div class="dep-bank-row">
+                    <div class="label">{{ depositType == 0 || depositType == 2 || depositType == 3 ? $t('银行账户') :
+                      $t('收币地址') }}
+                    </div>
+                    <div class="val">{{ depositInfo.bank_number }}</div>
+                    <span class="button__icon" v-clipboard:copy="depositInfo.bank_number" v-clipboard:success="onCopy">
+                      <svgIcon icon="icon-copy" widthName="18" heightName="18"></svgIcon>
+                    </span>
+                  </div>
+                  <div class="dep-bank-row">
+                    <div class="label">{{ $t('户名') }}</div>
+                    <div class="val">{{ depositInfo.bank_khm }}</div>
+                    <span class="button__icon" v-clipboard:copy="depositInfo.bank_khm" v-clipboard:success="onCopy">
+                      <svgIcon icon="icon-copy" widthName="18" heightName="18"></svgIcon>
+                    </span>
+                  </div>
+                  <div class="dep-bank-row" v-if="depositInfo.bank_open">
+                    <div class="label">{{ $t('开户行') }}</div>
+                    <div class="val">{{ depositInfo.bank_open }}</div>
+                    <span class="button__icon" v-clipboard:copy="depositInfo.bank_open" v-clipboard:success="onCopy">
+                      <svgIcon icon="icon-copy" widthName="18" heightName="18"></svgIcon>
+                    </span>
+                  </div>
+                </div>
+                <template v-if="dep_address == ''">
+                  <div class="input dep_bankInput input_md">
+                    <el-input type="number" :placeholder="$t('请输入您的充值金额')" clearable v-model="rechargePrice"
+                      @input="rechargeInputChange"></el-input>
+                    <p class="m-t-10"
+                      v-if="bankAll && depositInfo && depositInfo.hide_rate == 0 && depositInfo.pay_type != 1">
+                      {{ $t('汇率') }}: 1{{ depositInfo.currencyApi.country_code }} = {{
+                        numFormat(depositInfo.currencyApi.recharge_rate) }} {{ bankAll.currency_code != 'TWD' ?
+    bankAll.currency_code : '' }}<br>
+                      {{ $t('到账金额') }}: {{ numFormat((rechargePrice * depositInfo.currencyApi.recharge_rate).toFixed(2))
+                      }} {{ bankAll.currency_code != 'TWD' ? bankAll.currency_code : '' }}
+                    </p>
+                  </div>
+                  <div class="btn_wrap">
+                    <el-button class="button_red button_fullwidth" @click="rechargeSubmit"
+                      :loading="$store.state.bottonLoading">{{ $t('提交') }}</el-button>
+                  </div>
+                  <div class="m-t-10" v-if="this.$t('recharge_tip') != 'recharge_tip'" v-html="$t('recharge_tip')"></div>
+                </template>
+              </div>
+            </div>
+          </div>
+          <!-- Withdraw -->
+          <template v-if="walletCur == 1">
+            <div class="body">
+              <h2 class="body__title">
+                {{ $t('提现') }}
+                <a v-if="this.$t('withdraw_tutorial_url') != 'withdraw_tutorial_url'" :href="$t('withdraw_tutorial_url')"
+                  target="__bank" class="body_sub_title">{{ $t('提现教程') }}</a>
+              </h2>
+              <div class="curencies">
+                <div class="modal-depositwithdraw__balances">
+                  <el-select v-model="withdrawListValue" :no-data-text="$t('暂无数据')" :placeholder="$t('请选择')"
+                    style="width: 100%;" popper-class="dw-popper-class" @change="wtChange">
+                    <template #prefix>
+                      <div class="select-pre" v-if="withdrawList.length > 0">
+                        <img width="20" height="20" :src="withdrawList.find(item => item.name == withdrawListValue).img"
+                          class="currency__icon" />
+                      </div>
+                    </template>
+                    <el-option v-for="(item, index) in withdrawList" :key="index" :label="item.name" :value="item.name">
+                      <button class="dropdown-menu__link">
+                        <span class="currency is-wallet">
+                          <img width="20" height="20" :src="item.img" v-if="item.img" class="currency__icon" />
+                          <span class="currency__label">{{ $t(item.name) }}</span>
+                        </span>
+                      </button>
+                    </el-option>
+                  </el-select>
+                </div>
+                <div class="dropdown_bottomRight" v-if="withdrawFilter">
+                  <el-select v-model="$store.state.withdrawCarName" :placeholder="$t('请选择')"
+                    popper-class="dw-popper-class">
+                    <template #prefix v-if="mShowStatus == 0">
+                      <div class="select-pre">
+                        <img width="20" height="20"
+                          :src="(wtAllBank.find(item => item.id == $store.state.withdrawCarName) || wtAllBank[0]).img"
+                          class="currency__icon" />
+                      </div>
+                    </template>
+                    <template #prefix v-else-if="mShowStatus == 1">
+                      <div class="select-pre">
+                        <img width="20" height="20"
+                          :src="(wtAllUsdt.find(item=>item.id==$store.state.withdrawCarName)||wtAllUsdt[0]).img"
+                          class="currency__icon" />
+                      </div>
+                    </template>
+
+                    <template v-if="mShowStatus == 0">
+                      <el-option v-for="(item, index) in wtAllBank" :key="index"
+                        :label="(item.pay_type == 1 || item.pay_type == 2 ? item.pay_name : item.bank_name) + ' (' + (item.currency_code) + ')'"
+                        :value="item.id">
+                        <button class="dropdown-menu__link" @click="withdrawListTypeChange(item)">
+                          <span class="currency is-wallet">
+                            <img width="20" v-if="item.img" height="20" :src="item.img" class="currency__icon" />
+                            <span class="currency__label">{{ item.pay_type == 1 || item.pay_type
+                              == 2 ? item.pay_name : item.bank_name }} ({{ item.currency_code }})</span>
+                          </span>
+                        </button>
+                      </el-option>
+                    </template>
+                    <template v-if="mShowStatus == 1">
+                      <el-option v-for="(item, index) in wtAllUsdt" :key="index"
+                        :label="(item.pay_type == 1 || item.pay_type == 2 ? item.pay_name : item.bank_name) + ` - ${item.bankcrad}`"
+                        :value="item.id">
+                        <button class="dropdown-menu__link" @click="withdrawListTypeChange(item)">
+                          <span class="currency is-wallet">
+                            <img width="20" v-if="item.img" height="20" :src="item.img" class="currency__icon" />
+                            <span class="currency__label">{{ item.pay_type == 1 || item.pay_type
+                              == 2 ? item.pay_name : item.bank_name }} - {{ item.bankcrad }}</span>
+                          </span>
+                        </button>
+                      </el-option>
+                    </template>
+                    <template v-if="mShowStatus == 2">
+                      <el-option v-for="(item, index) in wtAllWallet" :key="index"
+                        :label="item.pay_type == 1 || item.pay_type == 2 ? item.pay_name : item.bank_name"
+                        :value="item.id">
+                        <button class="dropdown-menu__link" @click="withdrawListTypeChange(item)">
+                          <span class="currency is-wallet">
+                            <img width="20" v-if="item.img" height="20" :src="item.img" class="currency__icon" />
+                            <span class="currency__label">{{ item.pay_type == 1 || item.pay_type
+                              == 2 ? item.pay_name : item.bank_name }}</span>
+                          </span>
+                        </button>
+                      </el-option>
+                    </template>
+                    <template v-if="mShowStatus == 3">
+                      <el-option v-for="(item, index) in wtAllPix" :key="index"
+                        :label="item.pay_type == 1 || item.pay_type == 2 ? item.pay_name : item.bank_name"
+                        :value="item.id">
+                        <button class="dropdown-menu__link" @click="withdrawListTypeChange(item)">
+                          <span class="currency is-wallet">
+                            <img width="20" v-if="item.img" height="20" :src="item.img" class="currency__icon" />
+                            <span class="currency__label">{{ item.pay_type == 1 || item.pay_type
+                              == 2 ? item.pay_name : item.bank_name }}</span>
+                          </span>
+                        </button>
+                      </el-option>
+                    </template>
+                  </el-select>
+                </div>
+              </div>
+              <div class="select-chain__overlay" v-if="allWithdrawChannel.length == 0">
+                <span>{{ $t('未检测到绑定卡片') }}</span>
+                <span class="btn-blue-link" @click="cardClick">{{ $t('去设置') }}</span>
+              </div>
+              <div v-else>
+                <div class="select-chain__overlay" v-if="withdrawCarFilter">
+                  <span>{{ $t('无法继续,请选择渠道') }}</span>
+                </div>
+              </div>
+              <div class="tab tab_withdraw">
+                <div class="tab__body">
+                  <!-- <div class="input-block input-block-address">
+                    <div class="input-block__body">
+                      <div class="input address_input input_md">
+                        <span class="input__label">您的钱包地址</span>
+                        <el-input clearable v-model="withdrawAddress"></el-input>
+                      </div>
+                    </div>
+                  </div>-->
+                  <div class="withdaraw_amounts">
+                    <div class="input-block input-block-amount">
+                      <div class="input-block__body">
+                        <div class="input input_md">
+                          <span class="input__label">{{ $t('数量') }}</span>
+                          <el-input type="number" clearable v-model="withdrawPrice" @input="wtInputChange">
+                            <div class="input-suffix" slot="suffix">
+                              <el-button size="mini" class="button_grey1" @click="allPrice">{{ $t('All') }}</el-button>
+                            </div>
+                          </el-input>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="input-block input-block-balance">
+                      <div class="input-block__body">
+                        <div class="input input_md">
+                          <span class="input__label">汇率</span>
+                          <el-input clearable v-model="Balance"></el-input>
+                        </div>
+                      </div>
+                    </div>-->
+                  </div>
+                  <div v-if="curWithdrawInfo" class="withdraw_info">
+                    <p v-if="parseFloat(curWithdrawInfo.withdrawal_rate) != 1">{{ $t('当前汇率') }}: {{
+                      numFormat((1 / curWithdrawInfo.withdrawal_rate).toFixed(2)) }}{{ bankAll.currency_code }} = 1{{
+    curWithdrawInfo.currency_code }}</p>
+                    <p v-if="parseFloat(curWithdrawInfo.withdrawal_rate) != 1 && withdrawPrice > 0">{{ $t('到账金额') }}: {{
+                      numFormat((withdrawPrice * curWithdrawInfo.withdrawal_rate).toFixed(2)) }} {{
+    curWithdrawInfo.currency_code }}</p>
+                    <p>{{ $t('单日剩余提现次数') }} {{ wtRnum }}</p>
+                    <p>{{ $t('最低提款金额为') }} {{ wtMinimum }}</p>
+                    <p>{{ $t('最高提款金额为') }} {{ wtHighest }}</p>
+                  </div>
+                  <div class="btn_wrap">
+                    <el-button :loading="$store.state.bottonLoading" class="button_red button_fullwidth"
+                      @click="withdrawChange">{{ $t('提交') }}</el-button>
+                  </div>
+                  <div class="m-t-10" v-if="this.$t('withdraw_tip') != 'withdraw_tip'" v-html="$t('withdraw_tip')"></div>
+                  <!-- <div class="withdraw_info">
+                    <p>交易费: 2% ≈ XXX USDT</p>
+                  </div>-->
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <div class="body__warning" v-if="isMobile">
+            <div class="enabled_2fa" v-if="$store.state.userInfo.goodsle_bind">
+              <svgIcon icon="icon-secured"></svgIcon>
+              <span>{{ $t('Protected by 2FA') }}</span>
+            </div>
+            <div class="warning" v-else>
+              <p>{{ $t('You currently do not have 2FA enabled') }}</p>
+              <button @click="goUrl('/account?modal=enabled2fa')" type="button"
+                class="button button_md button_grey2 button_center button_fullwidth">
+                <span class="button__inner">
+                  <span class="button__text">
+                    <span>⚠️&nbsp;&nbsp;{{ $t('Enable 2FA') }}</span>
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+
+
+recycleBin2
+
+  <header class="header">
+      <div class="header__left-block">
+        <div class="logo">
+          <div class="logo__inner">
+            <button class="hamburger" :class="flagShow ? 'is-active' : ''" @click="menuClick">
+              <svgIcon icon="icon-hamburger"></svgIcon>
+            </button>
+            <router-link to="/" class="logo__link">
+              <div class="logo__picture">
+                <el-image v-if="$store.state.windowWidth < 1099" :src="$helper.get('rule').website_mobile_logo || mlogo"
+                  style="width: 50px; height: 50px"></el-image>
+                <el-image v-else :src="$helper.get('rule').website_pc_logo || logo" style="width: 142px; height: 35px"
+                  class="logo__img"></el-image>
+              </div>
+            </router-link>
+          </div>
+        </div>
+        <div class="casino-sport-selector" v-if="!isMobile">
+          <el-menu :default-active="$route.path" :router="true" class="el-casino-nav" mode="horizontal">
+            <el-menu-item :class="[isSport ? '' : 'isActive']" index="/">
+              <span class="iconfont icon-casino-"></span>
+              <span>{{ $t('Gaming') }}</span>
+            </el-menu-item>
+            <el-menu-item :class="[isSport ? 'isActive' : '']" index="/sport-betting"
+              v-if="this.$t('sport_is_hidden') != 'hide'">
+              <span class="iconfont icon-lanqiu"></span>
+              <span>{{ $t('体育') }}</span>
+            </el-menu-item>
+          </el-menu>
+        </div>
+      </div>
+      <div class="header__right-block">
+        <!-- 登录 -->
+        <div class="btn-container" v-if="$store.state.isLoginStatu && $store.state.userInfo">
+          <div class="dropdown balance-wrapper dropdown_lg dropdown_bottom">
+            <div class="dropdown__trigger-custom">
+              <div class="balance">
+                <div class="balance__currency-wrap" v-if="$store.state.blanceStatus" id="balance">
+                  <img :src="require('@/assets/images/' + $store.state.currencyIcon)" class="currency__icon"
+                    style="width: 24px; height: 24px;" />
+                  <div class="currency__balances-wrap" @click="infoUpdate">
+                    <div class="currency__balances">{{ numFormat($store.state.userInfo.balance) }}</div>
+                  </div>
+                  <span class="iconfont icon-jiazai_shuaxin" :class="updateStatus ? 'circle' : ''"
+                    @click="infoUpdate"></span>
+                </div>
+                <div class="balance__currency-wrap" v-else id="balance">
+                  <span>{{ $t('游戏中') }}</span>
+                  <span class="el-icon-loading"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <el-button type="button" :loading="$store.state.loading.wallet"
+            class="button btn-wallet button_lg button_red button_center button_animate" @click="dialogVisibleChange">
+            <span class="button__inner">
+              <img :src="require('@/assets/images/wallet-icon2.png')" style="width: 28px; height: 24px;" />
+              <span class="button__text" style="margin-left: 5px;" v-if="!isMobile">{{ $t('钱包') }}</span>
+            </span>
+          </el-button>
+          <div class="dropdown profile-wrapper dropdown_lg dropdown_bottomRight">
+            <div class="dropdown__trigger-custom" @click.stop="userToggle">
+              <div class="profile">
+                <div class="user profile__avatar">
+                  <div class="user__avatar" style="width: 32px; height: 32px; overflow: hidden; border-radius: 50%;">
+                    <img v-if="$store.state.userInfo.head_img"
+                      v-lazy="$store.state.userInfo.head_img" style="width: 100%; height: 100%" />
+                    <img v-else src="../assets/images/default_head.png" style="width: 100%; height: 100%" />
+                  </div>
+                </div>
+                <i v-if="isMobile && $store.state.messageUnreadCount > 0">{{ $store.state.messageUnreadCount }}</i>
+              </div>
+              <span class="el-icon--right" :class="userShow ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"></span>
+            </div>
+            <div class="dropdown__inner" v-show="userShow && $store.state.userInfo">
+              <div class="dropdown__content">
+                <div class="profile-preview">
+                  <div class="profile-preview__userpick">
+                    <div class="user">
+                      <div class="user__avatar"
+                        style="width: 64px; height: 64px; overflow: hidden; border-radius: 50%; margin-bottom: 8px;">
+                        <div class="user__inner">
+                          <el-image v-if="$store.state.userInfo.head_img"
+                            :src="$store.state.userInfo.head_img" style="width: 100%; height: 100%" fit="cover">
+                            <div slot="error" class="image-slot">
+                              <i class="iconfont icon-img-false"></i>
+                            </div>
+                          </el-image>
+                          <el-image v-else :src="require('../assets/images/default_head.png')"
+                            style="width: 100%; height: 100%" fit="cover">
+                            <div slot="error" class="image-slot">
+                              <i class="iconfont icon-img-false"></i>
+                            </div>
+                          </el-image>
+                        </div>
+                      </div>
+                      <div class="user__wrap"></div>
+                    </div>
+                    <div class="item-info-row">{{ $store.state.userInfo.level_name }}</div>
+                    <div class="item-info-row" v-if="$store.state.showUserId == 1">
+                      {{ $t('ID') }}:
+                      {{ $store.state.userInfo.rec_code }}
+                      <div v-clipboard:copy="$store.state.userInfo.rec_code" v-clipboard:success="onCopy">
+                        <svgIcon icon="icon-copy" ></svgIcon>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="profile-preview__name">{{ $store.state.userInfo.real_name }}</span>
+                </div>
+                <div class="profile-progress" @click="goUrl('/rank-system')">
+                  <!-- <div class="profile-progress__head">
+                    <span>{{$store.state.userInfo.level_name?$store.state.userInfo.level_name:''}}</span>
+                    <span>{{$store.state.userInfo.next_level_name?$store.state.userInfo.next_level_name:''}}</span>
+                    <span
+                      v-if="!$store.state.userInfo.next_level_name && !$store.state.userInfo.next_level_name"
+                    >{{'最高等级'}}</span>
+                  </div> -->
+                  <div class="profile-progress__inner-wapper">
+                    <!-- <div class="profile-progress__inner">
+                      <div class="progress-wrapper size-8 is-fullwidth">
+                        <el-progress :percentage="$store.state.userInfo.next_level_rate"></el-progress>
+                      </div>
+                      <img src="../assets/images/gift.png" alt />
+                    </div> -->
+                    <div class="profile-progress__inner">
+                      <div class="progress-wrapper" style="width: 100%;">
+                        <span class="progress-subtitle">{{ $t("充值金额") }}</span>
+                        <el-progress
+                          :percentage="calc($store.state.userInfo.recharge1, $store.state.userInfo.next_level_recharge)"></el-progress>
+                        <span class="progress-subtitle"
+                          v-if="($store.state.userInfo.next_level_recharge - $store.state.userInfo.recharge1) > 0">{{
+                            $langKey($t("您仍需 {n} 才能升级"),{n:formatNumber($store.state.userInfo.next_level_recharge-$store.state.userInfo.recharge1)}) }}</span>
+                      </div>
+                    </div>
+                    <div class="profile-progress__inner">
+                      <div class="progress-wrapper" style="width: 100%;">
+                        <span class="progress-subtitle">{{ $t("投注金额") }}</span>
+                        <el-progress
+                          :percentage="calc($store.state.userInfo.water, $store.state.userInfo.next_level_water)"></el-progress>
+                        <span class="progress-subtitle"
+                          v-if="($store.state.userInfo.next_level_water - $store.state.userInfo.water) > 0">{{
+                            $langKey($t("您仍需 {n} 才能升级"),{n:formatNumber($store.state.userInfo.next_level_water-$store.state.userInfo.water)}) }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="profile-menu">
+                  <div class="vertical-menu">
+                    <ul class="vertical-menu__inner">
+                      <li class="vertical-menu__item" v-if="isMobile">
+                        <button class="vertical-menu__link" @click="showMsg">
+                          <svgIcon icon="icon-bell-full"></svgIcon>
+                          <span>{{ $t('站内信息') }}</span>
+                          <i class="vertical-menu__notify" v-if="$store.state.messageUnreadCount > 0">{{
+                            $store.state.messageUnreadCount }}</i>
+                        </button>
+                      </li>
+                      <li class="vertical-menu__item">
+                        <button class="vertical-menu__link" @click="accountChange">
+                          <svgIcon icon="icon-account"></svgIcon>
+                          <span>{{ $t('帐户') }}</span>
+                        </button>
+                      </li>
+                      <li class="vertical-menu__item">
+                        <button class="vertical-menu__link" @click="url('/transactions')">
+                          <svgIcon icon="icon-transaction"></svgIcon>
+                          <span>{{ $t('交易') }}</span>
+                        </button>
+                      </li>
+                      <li class="vertical-menu__item" @click="url('/game-history')">
+                        <button class="vertical-menu__link">
+                          <svgIcon icon="icon-history"></svgIcon>
+                          <span>{{ $t('游戏历史') }}</span>
+                        </button>
+                      </li>
+                      <!-- <li class="vertical-menu__item">
+                        <button class="vertical-menu__link" @click="url('/sessions')">
+                          <svgIcon icon="icon-sessions"></svgIcon>
+                          <span>{{ $t('登录日志') }}</span>
+                        </button>
+                      </li> -->
+                      <li class="vertical-menu__item">
+                        <button class="vertical-menu__link" @click="cardClick">
+                          <svgIcon icon="icon-transaction"></svgIcon>
+                          <span>{{ $t('卡片管理') }}</span>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <el-button type="button" :loading="loginOutLoading" class="button button_sm button_grey1 button_center"
+                  @click="loginOut">
+                  <span class="button__text">{{ $t('登出') }}</span>
+                </el-button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- weiw未登录 -->
+        <div class="btn-container no-logged" v-else>
+          <el-button class="button_red button_animate" @click="login(1)">{{ $t('登录') }}</el-button>
+          <el-button class="button_blue button_animate button_animate_reg" @click="login(2)">{{ $t('注册') }}</el-button>
+        </div>
+        <button aria-label="Open chat" class="notify-btn" @click="showMsg" v-if="$store.state.isLoginStatu">
+          <div class="notify-btn__inner">
+            <svgIcon icon="icon-bell-full" class="iconBet"></svgIcon>
+            <div class="amount" v-if="$store.state.messageUnreadCount > 0">{{ $store.state.messageUnreadCount }}</div>
+          </div>
+        </button>
+      </div>
+    </header>

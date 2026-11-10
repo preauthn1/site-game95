@@ -1,0 +1,389 @@
+.back-button{
+  background: #111923 !important;
+  color: #FFFFD6 !important;
+  margin-bottom: 50px;
+  @media (max-width:768px) {
+    margin-bottom: 15px;
+  }
+  @media (max-width:540px) {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 8%;
+  }
+}
+.canvas-wapper{
+  width: 100%;
+}
+.content-box{
+  background-color: #111923;
+  border-radius: 16px;
+  padding: 21px 28px 62px 16px;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 37px;
+  @media (max-width:768px) {
+    flex-direction: column;
+    padding: 15px;
+    margin-bottom: 12px;
+  }
+}
+.f-box{
+  width: 430px;
+  user-select: none;
+  @media (max-width:768px) {
+    width: 104%;
+    margin-left: -5%;
+    margin-bottom: 48px;
+  }
+  @media (max-width:540px) {
+    margin-top: -10%;
+  }
+}
+
+.five-title{
+  width: 100%;
+  position: relative;
+  z-index: 4;
+}
+.content{
+  width: 94%;
+  margin-left: 6%;
+}
+.canvas-img-box{
+  height: 0;
+  padding-bottom: 70%;
+  user-select: none;
+  background-size: 100% 100%;
+  position: relative;
+  max-width: calc(100vw - 40px);
+  margin-bottom: 35px;
+  background-image: url(~@/assets/images/five-pop-bg-pc.png);
+  @media (max-width:768px) {
+    padding-bottom: 103%;
+    margin-bottom: 20px;
+    background-image: url(~@/assets/images/five-pop-bg.png);
+  }
+}
+.canvas-box{
+  background-image: url(~@/assets/images/wufudiceng.png);
+  background-size: 100% 100%;
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  width: 224px;
+  height: 64px;
+  bottom: 20px;
+  // padding-bottom: 28%;
+  @media (max-width:768px) {
+    padding-bottom: 28%;
+    height: auto;
+    width: 90%;
+    bottom: 40px;
+  }
+  .canvas{
+    top: 6%;
+    left: 2%;
+    bottom: 6%;
+    right: 2%;
+    position: absolute;
+  }
+  ::v-deep .__canvas-box{
+    background-image: none;
+    background-color: transparent;
+    border-radius: 0;
+  }
+}
+
+// .canvas{
+//   height: 169px;
+//   margin-top: -4%;
+//   margin-bottom: 23px;
+//   @media (max-width:768px) {
+//     width: 100%;
+//     height: 147px;
+//   }
+//   @media (max-width:540px) {
+//     height: 127px;
+//   }
+// }
+
+.content-wapper{
+  flex: 1;
+  margin-left: 50px;
+  @media (max-width:768px) {
+    margin: 0;
+    width: 100%;
+  }
+}
+.content-title-box{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.content-title{
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  color: #FFFFD6;
+  @media (max-width:540px) {
+    font-size: 15px;
+  }
+}
+.title-icon{
+  width: 23px;
+  margin-right: 6px;
+}
+.content-question{
+  font-size: 12px;
+  color: #018FF2;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  img{
+    width: 12px;
+    margin-left: 4px;
+  }
+}
+
+.slide{
+  width: 97px;
+  background-image: url("~@/assets/images/five-bessings-cart.png");
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  @media (max-width:540px) {
+    width: 87px;
+  }
+}
+.slide-icon{
+  width: 46px;
+  height: 54px;
+  object-fit: contain;
+  margin: 14px 0 4px;
+  @media (max-width:540px) {
+    height: 50px;
+    width: 42px;
+  }
+}
+.slide-btn{
+  margin-top: 4px;
+  @media (max-width:540px) {
+    border-radius: 7px;
+  }
+}
+.share-buttons{
+  display: flex;
+  margin-top: 40px;
+  position: relative;
+  @media (max-width:540px) {
+    flex-direction: column;
+    gap: 19px;
+    margin-top: 20px;
+  }
+  .five-button{
+    flex: 1;
+    @media (max-width:540px) {
+      margin: 0;
+    }
+  }
+}
+
+
+
+.order-wapper {
+  border-radius: 18px;
+  background-color: #111923;
+  padding: 33px;
+
+  @media (max-width:768px) {
+    padding: 15px;
+  }
+}
+
+
+.rule-title{
+  display: flex;
+  align-items: flex-start;
+  img{
+    width: 23px;
+    margin-right: 6px;
+  }
+}
+.rule {
+  padding-top: 15px;
+}
+
+.num-list-box {
+  overflow: hidden;
+}
+
+.pop-icon{
+  width: 77px ;
+  display: block;
+  margin: 30px auto ;
+}
+
+.canvas-img-wapper{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.el-icon-refresh{
+  font-size: 20px;
+  color: #89F7FE;
+  position: absolute;
+  left: calc(50% - 12px);
+  bottom: -26px;
+  @media (max-width:768px) {
+    bottom: 10px;
+  }
+}
+.refresh-icon-animate{
+  animation: refresh-icon 1s 1;
+}
+@keyframes  refresh-icon{
+  100%{
+    transform: rotate(720deg);
+  }
+}
+.canvas-icon{
+  width: 50px;
+  height: 69px;
+  object-fit: contain;
+  @media (max-width:768px) {
+    width: calc(74px / 1.2);
+    height: calc(102px / 1.2);
+  }
+}
+
+.cover{
+  width: 100%;
+  margin: 20px 0;
+}
+.gray-image {
+  filter: grayscale(100%);
+}
+.content-swiper{
+  position: relative;
+}
+
+
+// 引导页
+.guide-page{
+  position: relative;
+  .guide-tip{
+    position: absolute;
+    z-index: 2002;
+    background-color: #8847AA;
+    right: 30px;
+    padding: 4px 10px;
+    border-radius: 10px;
+    @media (max-width:768px) {
+      right: 15px;
+    }
+  }
+  .mask{
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.6);
+    z-index: 2001;
+  }
+  .show-guide{
+    position: relative;
+    z-index: 2002;
+    border: 2px dashed #FFF;
+    pointer-events: none;
+  }
+  .swiper{
+    position: relative;
+    z-index: 2003;
+    pointer-events: none;
+    .slide{
+      opacity: .5;
+      pointer-events: none;
+    }
+    .show-guide{
+      opacity: 1;
+      border-radius: 5px;
+    }
+  }
+  .btn-wapper{
+    position: relative;
+    z-index: 2002;
+    .guide-box1{
+      position: absolute;
+      bottom: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding-bottom: 22%;
+      margin-bottom: 20px;
+      .line{
+        position: absolute;
+        width: 40%;
+        bottom: 0;
+        right: 14%;
+      }
+      .guide-tip1{
+        height: 0;
+        display: flex;
+        align-items: center;
+        padding-right: 31%;
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+  }
+  .guide-box2{
+    position: absolute;
+    z-index: 2004;
+    bottom: 106%;
+    display: flex;
+    .guide-tip2{
+      display: flex;
+      height: 0;
+      align-items: center;
+      padding-left: 6px;
+    }
+    .line{
+      width: 50px;
+      margin-left: 40px;
+      @media (max-width:768px) {
+        width: 40px;
+        margin-left: 34px;
+      }
+    }
+  }
+  .guide-box3{
+    position: absolute;
+    top: 100%;
+    z-index: 2004;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .guide-box3-content{
+      border: 2px dashed #FFF;
+      border-radius: 6px;
+      padding: 17px;
+    }
+    .bonus{
+      width: 100%;
+    }
+    .line{
+      width: 17px;
+      margin: 10px 0;
+    }
+  }
+}
